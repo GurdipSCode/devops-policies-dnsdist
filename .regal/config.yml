@@ -1,0 +1,64 @@
+# .regal/config.yaml
+# Regal linter configuration for dnsdist OPA policies
+
+project:
+  rego-version: 1
+  roots:
+    - path: .
+
+rules:
+  style:
+    # We use long descriptive msgs — allow longer lines
+    line-length:
+      level: warning
+      max-line-length: 150
+
+    # opa fmt is the canonical formatter
+    opa-fmt:
+      level: error
+
+    # Prefer snake_case (we already follow this)
+    prefer-snake-case:
+      level: error
+
+    # We use some older-style assignment in defaults
+    use-assignment-operator:
+      level: warning
+
+    todo-comment:
+      level: ignore
+
+  idiomatic:
+    # We use future.keywords imports for broad compatibility
+    use-if:
+      level: error
+
+    use-contains:
+      level: error
+
+    # Not all string patterns need raw strings in our case
+    non-raw-regex-pattern:
+      level: warning
+
+  bugs:
+    level: error
+
+  imports:
+    level: error
+
+  testing:
+    # We don't have _test.rego files yet — suppress
+    level: ignore
+
+  custom:
+    naming-convention:
+      level: error
+      conventions:
+        - pattern: '^dnsdist(\.[a-z_]+)*$'
+          targets:
+            - package
+
+capabilities:
+  from:
+    engine: opa
+    version: v0.68.0
